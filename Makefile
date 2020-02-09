@@ -8,4 +8,4 @@ build:
 
 install: build
 	mkdir -p ./.tflint.d/plugins
-	mv ./tflint-ruleset-onename ./.tflint.d/plugins
+	mv -f ./tflint-ruleset-onename ./.tflint.d/plugins
