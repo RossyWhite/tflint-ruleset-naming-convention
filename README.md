@@ -1,1 +1,1 @@
-# tflint-nc-generator
+# tflint-ruleset-onename

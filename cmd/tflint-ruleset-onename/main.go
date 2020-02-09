@@ -1,0 +1,1 @@
+package tflint_ruleset_onename
