@@ -21,7 +21,7 @@ type Config struct {
 // Rule is a configuration of each rule
 type Rule struct {
 	Resource  string `json:"resource"`
-	Attribute string `json:"Attribute"`
+	Attribute string `json:"attribute"`
 	Regex     string `json:"regex"`
 }
 
