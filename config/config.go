@@ -1,10 +1,11 @@
-package main
+package config
 
 import (
 	"encoding/json"
 	"fmt"
 	"os"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/pkg/errors"
 )
 
@@ -15,21 +16,21 @@ const (
 
 // Config is plugin configuration
 type Config struct {
-	Rules []*Rule `json:"rules"`
+	Rules []*Rule `validate:"required,dive,required",json:"rules"`
 }
 
 // Rule is a configuration of each rule
 type Rule struct {
-	Resource  string `json:"resource"`
-	Attribute string `json:"attribute"`
-	Regex     string `json:"regex"`
+	Resource  string `validate:"required",json:"resource"`
+	Attribute string `validate:"required",json:"attribute"`
+	Regex     string `validate:"required",json:"regex"`
 }
 
 func NewConfig() *Config {
 	return &Config{}
 }
 
-func (c *Config) loadConfig() error {
+func (c *Config) LoadConfig() error {
 	path, err := configPath()
 	if err != nil {
 		return errors.Wrap(err, "configPath failed")
@@ -44,6 +45,20 @@ func (c *Config) loadConfig() error {
 
 	if err := json.NewDecoder(f).Decode(c); err != nil {
 		return errors.Wrap(err, "Decode failed")
+	}
+
+	if err := c.validate(); err != nil {
+		return errors.Wrap(err, "Validate failed")
+	}
+
+	return nil
+}
+
+func (c *Config) validate() error {
+	validate := validator.New()
+	err := validate.Struct(c)
+	if err != nil {
+		return err
 	}
 
 	return nil
