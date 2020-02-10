@@ -4,6 +4,11 @@
       "resource": "aws_instance",
       "attribute": "ami-id",
       "regex": "^ami-[0-9]+"
+    },
+    {
+      "resource": "aws_sns_topic",
+      "attribute": "name",
+      "regex": ".*-topic$"
     }
   ]
 }

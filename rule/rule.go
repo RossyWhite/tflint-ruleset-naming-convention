@@ -2,7 +2,7 @@ package rule
 
 import (
 	"fmt"
-	"github.com/RossyWhite/tflint-ruleset-onename/config"
+	"github.com/RossyWhite/tflint-ruleset-naming-convention/config"
 	hcl "github.com/hashicorp/hcl/v2"
 	"github.com/pkg/errors"
 	"github.com/terraform-linters/tflint-plugin-sdk/tflint"

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/RossyWhite/tflint-ruleset-onename/rule"
+	"github.com/RossyWhite/tflint-ruleset-naming-convention/rule"
 	"github.com/terraform-linters/tflint-plugin-sdk/plugin"
 	"github.com/terraform-linters/tflint-plugin-sdk/tflint"
 )
