@@ -1,0 +1,9 @@
+{
+  "rules": [
+    {
+      "resource": "aws_instance",
+      "attribute": "ami-id",
+      "regex": "^ami-[0-9]+"
+    }
+  ]
+}
