@@ -14,10 +14,14 @@ const (
 	DefaultConfigPath = "~/.tflint.d/configs/onename.json"
 )
 
+type Config interface {
+	Load(path string) error
+	GetRules() []*Rule
+}
+
 // Config is plugin configuration
-type Config struct {
+type RuleConfig struct {
 	Rules []*Rule `validate:"required,dive,required",json:"rules"`
-	path  string
 }
 
 // Rule is a configuration of each rule
@@ -27,12 +31,23 @@ type Rule struct {
 	Regex     string `validate:"required",json:"regex"`
 }
 
-func NewConfig() *Config {
-	return &Config{}
+func NewRuleConfig() *RuleConfig {
+	return &RuleConfig{}
 }
 
-func (c *Config) LoadConfig(path string) error {
-	f, err := os.Open(path)
+func (c *RuleConfig) Load(path string) error {
+	var fp string
+
+	if path != "" {
+		fp = path
+	}
+
+	fp, err := configPath()
+	if err != nil {
+		return err
+	}
+
+	f, err := os.Open(fp)
 	defer func() { _ = f.Close() }()
 
 	if err != nil {
@@ -50,8 +65,21 @@ func (c *Config) LoadConfig(path string) error {
 	return nil
 }
 
+func (c *RuleConfig) GetRules() []*Rule {
+	return c.Rules
+}
 
-func Path() (string, error) {
+func (c *RuleConfig) validate() error {
+	validate := validator.New()
+	err := validate.Struct(c)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func configPath() (string, error) {
 	if fileExists(LocalConfigPath) {
 		return LocalConfigPath, nil
 	}
@@ -67,14 +95,4 @@ func Path() (string, error) {
 func fileExists(name string) bool {
 	_, err := os.Stat(name)
 	return !os.IsNotExist(err)
-}
-
-func (c *Config) validate() error {
-	validate := validator.New()
-	err := validate.Struct(c)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }

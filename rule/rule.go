@@ -11,7 +11,9 @@ import (
 
 
 // OneNameRule checks whether the resource comply with the specific naming convention
-type OneNameRule struct{}
+type OneNameRule struct{
+	conf config.Config
+}
 
 // NewOneNameRule returns a new rule
 func NewOneNameRule() *OneNameRule {
@@ -41,12 +43,13 @@ func (r *OneNameRule) Link() string {
 // Check checks whether each attribute satisfy the condition given by config file
 func (r *OneNameRule) Check(runner tflint.Runner) error {
 	conf, err := r.loadConfig()
+	r.conf = conf
 
 	if err != nil {
 		return errors.Wrap(err, "loadConfig failed")
 	}
 
-	for _, rule := range conf.Rules {
+	for _, rule := range r.conf.GetRules() {
 		err = runner.WalkResourceAttributes(rule.Resource, rule.Attribute, func(attribute *hcl.Attribute) error {
 			var val string
 			if err := runner.EvaluateExpr(attribute.Expr, &val); err != nil {
@@ -77,15 +80,12 @@ func (r *OneNameRule) Check(runner tflint.Runner) error {
 }
 
 // loadConfig loads the configuration from config file
-func (r *OneNameRule) loadConfig() (*config.Config, error) {
-	conf := config.NewConfig()
-	path, err  := config.Path()
-
-	if err != nil {
-		return nil, err
+func (r *OneNameRule) loadConfig() (config.Config, error) {
+	if r.conf != nil {
+		return r.conf, nil
 	}
-
-	err = conf.LoadConfig(path)
+	conf := config.NewRuleConfig()
+	err := conf.Load("")
 	if err != nil {
 		return nil, err
 	}
