@@ -16,8 +16,7 @@ $ make install
 
 `conventions.json` defines a set of naming rules which is applied to your terraform resources.
 The rules can be written by using regex.
-The config file must be placed in `~/.tflint.d/configs/` or `./.tflint.d/configs/`  
-(working directory when `tflint` command is executed)  
+The config file must be placed in `~/.tflint.d/configs/` or `./.tflint.d/configs/` (working directory when `tflint` command is executed)  
 
 example is available [here](https://github.com/RossyWhite/tflint-naming-convention/blob/master/example/.tflint.d/configs/conventions.json). 
 
@@ -31,7 +30,7 @@ plugin "naming_convention" {
 }
 ```
 
-## 3. Run tflint !
+### 3. Run tflint !
 
 Just run `tflint`. an example output is shown below
 
