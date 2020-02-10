@@ -1,1 +1,1 @@
-# tflint-ruleset-onename
+# tflint-naming-convention

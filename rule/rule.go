@@ -37,7 +37,7 @@ func (r *OneNameRule) Severity() string {
 
 // Link returns the rule reference link
 func (r *OneNameRule) Link() string {
-	return "https://github.com/RossyWhite/tflint-ruleset-onenmae"
+	return "https://github.com/RossyWhite/tflint-naming-convention"
 }
 
 // Check checks whether each attribute satisfy the condition given by config file

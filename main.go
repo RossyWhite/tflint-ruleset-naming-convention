@@ -10,7 +10,7 @@ import (
 func main() {
 	plugin.Serve(&plugin.ServeOpts{
 		RuleSet: tflint.RuleSet{
-			Name:    "onename",
+			Name:    "naming_convention",
 			Version: "0.1.0",
 			Rules: []tflint.Rule{
 				rule.NewOneNameRule(),

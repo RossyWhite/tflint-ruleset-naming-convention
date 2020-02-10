@@ -6,9 +6,9 @@ test:
 
 .PHONY: build
 build:
-	go build -o tflint-ruleset-onename
+	go build -o tflint-ruleset-naming-convention
 
 .PHONY: install
 install: build
 	mkdir -p ./.tflint.d/plugins
-	mv -f ./tflint-ruleset-onename ./.tflint.d/plugins
+	mv -f ./tflint-ruleset-naming-convention ./.tflint.d/plugins

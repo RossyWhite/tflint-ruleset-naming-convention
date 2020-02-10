@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	LocalConfigPath   = "./.tflint.d/configs/onename.json"
-	DefaultConfigPath = "~/.tflint.d/configs/onename.json"
+	LocalConfigPath   = "./.tflint.d/configs/conventions.json"
+	DefaultConfigPath = "~/.tflint.d/configs/conventions.json"
 )
 
 type Config interface {
