@@ -64,34 +64,13 @@ func (r *OneNameRule) Check(runner tflint.Runner) error {
 						tflint.Metadata{Expr: attribute.Expr},
 					)
 				}
-
-				return runner.EmitIssue(
-					r,
-					fmt.Sprintf("%s.%s does match pattern `%s`",
-						rule.Resource, rule.Attribute, rule.Regex),
-					attribute.Expr.Range(),
-					tflint.Metadata{Expr: attribute.Expr},
-				)
+				return nil
 			})
 		})
 
-		//if err != nil {
-		//	break
-		//}
-	}
-
-	return err
-}
-
-func checkRegexp(reg, str string) error {
-	r, err := regexp.Compile(reg)
-
-	if err != nil {
-		return err
-	}
-
-	if ok := r.MatchString(str); !ok {
-		return errors.New("Regex Not Matched")
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
