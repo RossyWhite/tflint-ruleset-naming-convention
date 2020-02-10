@@ -6,6 +6,7 @@ import (
 	hcl "github.com/hashicorp/hcl/v2"
 	"github.com/pkg/errors"
 	"github.com/terraform-linters/tflint-plugin-sdk/tflint"
+	"regexp"
 )
 
 // OneNameRule checks whether the resource comply with the specific naming convention
@@ -48,19 +49,50 @@ func (r *OneNameRule) Check(runner tflint.Runner) error {
 	for _, rule := range conf.Rules {
 		err = runner.WalkResourceAttributes(rule.Resource, rule.Attribute, func(attribute *hcl.Attribute) error {
 			var val string
-			err := runner.EvaluateExpr(attribute.Expr, &val)
+			if err := runner.EvaluateExpr(attribute.Expr, &val); err != nil {
+				return err
+			}
 
-
+			matched, err := regexp.MatchString(rule.Regex, val)
 			return runner.EnsureNoError(err, func() error {
+				if !matched {
+					return runner.EmitIssue(
+						r,
+						fmt.Sprintf("%s.%s does not match pattern `%s`",
+							rule.Resource, rule.Attribute, rule.Regex),
+						attribute.Expr.Range(),
+						tflint.Metadata{Expr: attribute.Expr},
+					)
+				}
+
 				return runner.EmitIssue(
 					r,
-					fmt.Sprintf("%v", attribute.Expr),
+					fmt.Sprintf("%s.%s does match pattern `%s`",
+						rule.Resource, rule.Attribute, rule.Regex),
 					attribute.Expr.Range(),
 					tflint.Metadata{Expr: attribute.Expr},
 				)
 			})
 		})
+
+		//if err != nil {
+		//	break
+		//}
 	}
 
 	return err
+}
+
+func checkRegexp(reg, str string) error {
+	r, err := regexp.Compile(reg)
+
+	if err != nil {
+		return err
+	}
+
+	if ok := r.MatchString(str); !ok {
+		return errors.New("Regex Not Matched")
+	}
+
+	return nil
 }
