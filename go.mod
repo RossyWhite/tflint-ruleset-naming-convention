@@ -1,4 +1,4 @@
-module github.com/RossyWhite/tflint-ruleset-onename
+module github.com/RossyWhite/tflint-ruleset-naming-convention
 
 go 1.13
 
