@@ -9,6 +9,7 @@ import (
 	"regexp"
 )
 
+
 // OneNameRule checks whether the resource comply with the specific naming convention
 type OneNameRule struct{}
 
@@ -39,8 +40,7 @@ func (r *OneNameRule) Link() string {
 
 // Check checks whether each attribute satisfy the condition given by config file
 func (r *OneNameRule) Check(runner tflint.Runner) error {
-	conf := config.NewConfig()
-	err := conf.LoadConfig()
+	conf, err := r.loadConfig()
 
 	if err != nil {
 		return errors.Wrap(err, "loadConfig failed")
@@ -75,3 +75,21 @@ func (r *OneNameRule) Check(runner tflint.Runner) error {
 
 	return nil
 }
+
+// loadConfig loads the configuration from config file
+func (r *OneNameRule) loadConfig() (*config.Config, error) {
+	conf := config.NewConfig()
+	path, err  := config.Path()
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = conf.LoadConfig(path)
+	if err != nil {
+		return nil, err
+	}
+
+	return conf, nil
+}
+
