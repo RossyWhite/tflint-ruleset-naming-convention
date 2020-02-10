@@ -10,8 +10,8 @@ build:
 
 .PHONY: install
 install: build
-	mkdir -p ./.tflint.d/plugins
-	mv -f ./tflint-ruleset-naming_convention ./.tflint.d/plugins
+	mkdir -p ~/.tflint.d/plugins
+	mv -f ./tflint-ruleset-naming_convention ~/.tflint.d/plugins
 
 
 .PHONY: test-install
