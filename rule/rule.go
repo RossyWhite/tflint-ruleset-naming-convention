@@ -22,7 +22,7 @@ func NewOneNameRule() *OneNameRule {
 
 // Name returns the rule name
 func (r *OneNameRule) Name() string {
-	return "one_name"
+	return "naming_convention"
 }
 
 // Enabled returns whether the rule is enabled by default
@@ -37,7 +37,7 @@ func (r *OneNameRule) Severity() string {
 
 // Link returns the rule reference link
 func (r *OneNameRule) Link() string {
-	return "https://github.com/RossyWhite/tflint-naming-convention"
+	return "https://github.com/RossyWhite/tflint-ruleset-naming-convention"
 }
 
 // Check checks whether each attribute satisfy the condition given by config file
